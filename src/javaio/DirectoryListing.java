@@ -1,7 +1,7 @@
 package javaio;
 
 import java.io.*;
-import java.util.Scanner;
+
 
 class DirFilter implements FilenameFilter {
 
