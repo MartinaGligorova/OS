@@ -77,14 +77,14 @@ public class MakeDirectories {
                 System.out.println(f + " exists");
 
                 if (del) {
-                    // del = true
+                    // del == true
                     // delete file/dir denoted by path
                     System.out.println("deleting..." + f);
                     f.delete();
                 }
             } else { // Doesn't exist
                 if(!del){
-                    // del = false
+                    // del == false
                     // kreiraj files/dirs denoted by pathname
                     f.mkdirs();
                     System.out.println(" created " + f);
