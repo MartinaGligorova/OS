@@ -1,13 +1,11 @@
 package javaio;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Properties;
+
 
 public class FileClassOperations {
     // java.io package, classes that deal with input / output, abstract classes, stream oriented, methods and
