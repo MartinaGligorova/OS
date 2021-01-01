@@ -53,6 +53,9 @@ public class DirectoryListing {
                 // Rekurzivno pokazhi ja sodrzhinata na potfolderi:
                 if(f.isDirectory()){
                     // rekurziven povik na metodot za odredeniot folder f za pecatenje na subfiles na istiot.
+
+                    // + "\t" e za koga ke vleze vo potfolder da dodade prazen horizontalen tab pred nego - da se zadrzhi
+                    // file strukturata so prazni mesta spored LEVELS
                     listFile(f.getAbsolutePath(), prefix + "\t");
                 }
 
