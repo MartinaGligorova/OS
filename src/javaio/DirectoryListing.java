@@ -20,14 +20,8 @@ class DirFilter implements FilenameFilter {
         // false - file-ot nema da bide vraten na izlez
 
         String zemiTekoven = new File(name).getName();
-        // indexOf(String str) - indeksot na String afn != -1
-        // pr. zemiTekoven e .idea folder
-        // ako tekoven .idea folder ne go sodrzhi src stringot i.e == -1 vrati false
-        // i preskokni go toj folder pri list() na directory
-        // test so char - kade afn = a -> togas na izlez pri listanje na contents na folderot JavaIOAv1 ke se preskoknat
-        // site folders sto ne go sodrzhat char a t.e == -1, -> na izlez: .idea i JavaIOAv1.iml
 
-        // sama odlucuvas kako raboti filter-ot vo odnos na filename
+
         return zemiTekoven.indexOf(afn) != -1;
     }
 }
@@ -47,15 +41,13 @@ public class DirectoryListing {
             for (File f : subfiles) {
                 // print the permissions in unix like format
                 // getPermissions - permisii za odreden file vo nizata subfiles od nekoj folder newObj - format: rwx ili --- etc.
-                // i imeto na file-ot za koj se rab.
                 System.out.println(prefix + getPermissions(f) + "\t" + f.getName());
 
-                // Rekurzivno pokazhi ja sodrzhinata na potfolderi:
-                if(f.isDirectory()){
+                // Rekurzivno
+                if (f.isDirectory()) {
                     // rekurziven povik na metodot za odredeniot folder f za pecatenje na subfiles na istiot.
 
-                    // + "\t" e za koga ke vleze vo potfolder da dodade prazen horizontalen tab pred nego - da se zadrzhi
-                    // file strukturata so prazni mesta spored LEVELS
+                    // + "\t" zadrzhuvanje na file system structure
                     listFile(f.getAbsolutePath(), prefix + "\t");
                 }
 
@@ -67,7 +59,7 @@ public class DirectoryListing {
 
     // metod za vrakjanje na permisii na odreden file
     private static String getPermissions(File f) {
-        // format() metod, %s%s%s - narednite infos. naredi gi ovoj format spoeni
+        // format() metod, %s%s%s
         // dokolku procesot ima permisii da chita od file f.canRead() ispechati r, inaku -
         return String.format("%s%s%s", f.canRead() ? "r" : "-",
                 f.canWrite() ? "w" : '-', f.canExecute() ? "x" : '-');
