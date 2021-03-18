@@ -15,7 +15,7 @@ public class FileClassOperations {
 
     // File class obezbeduva metodi za manipulacija na datotechniot sistem.
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException {
         // kreirame objekt od tip File za pristap do metodite od File class.
         // pri kreiranje se prinesuva String ime na file-ot - sekoj file e identifikuvan preku patekata do nego vo file system
         File fileObj = new File("C:\\Users\\Martina\\Desktop\\OS2019\\Operativni 2020\\Vezhbi\\newfilecreated.txt");
