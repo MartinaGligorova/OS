@@ -35,6 +35,7 @@ public class BlockingQueue<T> {
                 // izlezi od loop da se dodeli kluch na nareden thread
             }
             lock.unlock();
+            break;
             // dokolku contents.length == capacity - prepolna e nizata ne moze da dodavash otkluchi nekoj da izvadi item
         }
     }
@@ -42,7 +43,7 @@ public class BlockingQueue<T> {
     public T dequeue() {
         // izvadi item od niza
         // uslov - ako nizata e prazna ne mozes da izvadish item
-        T element;
+        T element = null;
         int i = 0;
         while (true) {
             lock.lock();
@@ -56,6 +57,7 @@ public class BlockingQueue<T> {
                 break;
             }
             lock.unlock();
+            break;
             // dokolku contents.size<0..prazna e otkluci
         }
         return element;

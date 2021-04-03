@@ -27,7 +27,7 @@ public class TwoThreads2 {
 }
 
 class ThreadClassLettersNumbers2 extends Thread {
-    List<Object> lettersnumbers = new ArrayList<>();
+    List<Object> lettersnumbers;
 
 
     public ThreadClassLettersNumbers2(List<Object> lettersnumbers) {
