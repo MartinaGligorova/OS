@@ -3,52 +3,58 @@ package vtoralabos2021;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.HashSet;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.Semaphore;
 
 public class CountLetter {
 
     /**
-     * Promenlivata koja treba da go sodrzi brojot na pojavuvanja na bukvata E
+     * Promenlivata koja treba da go sodrzi brojot na pojavuvanja na bukvata A
      */
-    int count = 0;
-
+    static int count = 0;
     /**
      * TODO: definirajte gi potrebnite elementi za sinhronizacija
      */
-    public static Lock lock;
+
+    static Semaphore coordinator;
+    static Semaphore mutex;
+    // ^ samo 1 nitka moze da ja modificira count vo odreden vremenski moment
 
     public void init() {
-        lock = new ReentrantLock();
+        coordinator = new Semaphore(100);
+        mutex = new Semaphore(1);
     }
 
     class Counter extends Thread {
-        // nishka - koga kreirame instanca
+        // Nested Thread
 
         public void count(String data) throws InterruptedException {
-            // da se implementira - broenje na pojavuvanje na 'E'
-            lock.lock();
+            // da se implementira
+            coordinator.acquire();
+            // 100 nitki od 1000 chekaat ovde
 
-            for (int i = 0; i < data.length(); i++) {
-                if (data.charAt(i) == 'E' || data.charAt(i) == 'e') {
-                    count++;
-                }
+            mutex.acquire();
+            // edna po edna dobivaat pristap do count..
+            if (data.charAt(0) == 'E' || data.charAt(0) == 'e') {
+                count++;
+                mutex.release();
+                // oslobodi mutex ako char e E
             }
-            lock.unlock();
+            mutex.release();
+            coordinator.release();
+
         }
 
         private String data;
 
         public Counter(String data) {
+
             this.data = data;
-            // konstruktor
         }
 
         @Override
         public void run() {
             try {
                 count(data);
-                // izvrshi go metodot za pojavuvanje na E vo string data i vrati rez
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -72,14 +78,13 @@ public class CountLetter {
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
 
         String pom = bf.readLine();
-        String[] data = pom.split(" ");
+        String[] data = pom.split("");
 
         for (int i = 0; i < data.length; i++) {
+            // kolku sto ima characters - tolku nitki se kreiraat - so toj single character
 
             Counter c = new Counter(data[i]);
             threads.add(c);
-            // povekje threads - fragmenti - strings so 'E'
-            // zapocni gi site odednas i izbroj vo site zaedno kolku pati se pojavila E
         }
 
 
@@ -95,3 +100,5 @@ public class CountLetter {
 
     }
 }
+
+

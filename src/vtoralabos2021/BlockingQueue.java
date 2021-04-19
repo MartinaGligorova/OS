@@ -1,65 +1,97 @@
 package vtoralabos2021;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class BlockingQueue<T> {
+public class BlockingQueue<Object> {
 
-    //T[] contents;
-    List<String> contents = new ArrayList<>();
+    List<Object> contents = new ArrayList<>();
     int capacity;
-    public static Lock lock = new ReentrantLock();
+    static Lock lock = new ReentrantLock();
+    // mutex
 
     public BlockingQueue(int capacity) {
-        //  contents = (T[]) new Object[capacity];
         this.capacity = capacity;
     }
 
-    public void enqueue(T item) {
-        // dodadi item
-        // uslov - ako nizata e polna ne mozes da dodades item
+    // Chlen dodava item vo BQ
+    public void enqueue(String bookName) {
         while (true) {
-            // infinite loop
             lock.lock();
-            // pred da ja proverish sostojbata na contents zakluchi - da ne ja promeni dr. thread vo megjuvreme
             if (contents.size() < capacity) {
-                // ima mesto
-
-                contents.add((String) item);
-
+                contents.add((Object) bookName);
                 lock.unlock();
-                // otkako sme postavile item otkluci
                 break;
-                // izlezi od loop da se dodeli kluch na nareden thread
             }
             lock.unlock();
             break;
-            // dokolku contents.length == capacity - prepolna e nizata ne moze da dodavash otkluchi nekoj da izvadi item
         }
     }
 
-    public T dequeue() {
-        // izvadi item od niza
-        // uslov - ako nizata e prazna ne mozes da izvadish item
-        T element = null;
-        int i = 0;
+    // Clen vadi item od BQ
+    public String dequeue() {
+        String book = "";
         while (true) {
             lock.lock();
-            // zakluci za proverka na capacity
             if (contents.size() > 0) {
-                // ako ima elementi vo nizata
-                element = (T) contents.remove(0);
-
-                // remove from head?
+                book = (String) contents.remove(0);
                 lock.unlock();
                 break;
             }
+            // dokolku contents.size == 0...
             lock.unlock();
             break;
-            // dokolku contents.size<0..prazna e otkluci
         }
-        return element;
+        return book;
+    }
+
+
+    public static void main(String[] args) throws IOException, InterruptedException {
+        BlockingQueue blockingQueue = new BlockingQueue(3);
+        List<Chlen> nishki = new ArrayList<>();
+        BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+
+        for (int i = 0; i < 5; i++) {
+            String imeNaKniga = bf.readLine();
+            Chlen chlen = new Chlen(blockingQueue, imeNaKniga);
+            nishki.add(chlen);
+        }
+
+        for (Chlen c : nishki) {
+            c.start();
+        }
+        for (Chlen c : nishki) {
+            c.join();
+        }
+
+        System.out.println("End of BQ");
+    }
+}
+
+class Chlen extends Thread {
+    BlockingQueue blockingQueue;
+    String bookName;
+
+    public Chlen(BlockingQueue blockingQueue, String bookName) {
+        this.blockingQueue = blockingQueue;
+        this.bookName = bookName;
+    }
+
+    @Override
+    public void run() {
+        for (int i = 0; i < 2; i++) {
+            System.out.println("Chlen " + i + " pozajmuva kniga");
+            blockingQueue.dequeue();
+            // pristap do metodot
+        }
+        for (int i = 0; i < 2; i++) {
+            System.out.println("Chlen " + i + " vrakja kniga");
+            blockingQueue.enqueue(bookName);
+        }
     }
 }
