@@ -36,10 +36,10 @@ public class CountLetter {
             // edna po edna dobivaat pristap do count..
             if (data.charAt(0) == 'E' || data.charAt(0) == 'e') {
                 count++;
-                mutex.release();
                 // oslobodi mutex ako char e E
             }
             mutex.release();
+
             coordinator.release();
 
         }
