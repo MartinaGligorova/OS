@@ -15,20 +15,20 @@ public class TwoThreads {
         }
 
 
-        ThreadClassLettersNumbers threadClassLettersNumbers = new ThreadClassLettersNumbers(bukvi);
-        ThreadClassLettersNumbers threadClassLettersNumbers1 = new ThreadClassLettersNumbers(brojki);
-        Thread thread = new Thread(threadClassLettersNumbers);
-        Thread thread1 = new Thread(threadClassLettersNumbers1);
-        thread.start();
-        thread.join();
-        thread1.start();
-        thread1.join();
+        ThreadClassLettersNumbers thread1 = new ThreadClassLettersNumbers(bukvi);
+        ThreadClassLettersNumbers thread2= new ThreadClassLettersNumbers(brojki);
+        Thread threadA = new Thread(thread1);
+        Thread threadB = new Thread(thread2);
+        threadA.start();
+        threadA.join();
+        threadB.start();
+        threadB.join();
     }
 }
 
 class ThreadClassLettersNumbers implements Runnable {
 
-    List<Object> bukvibrojki = new ArrayList<>();
+    List<Object> bukvibrojki;
 
     public ThreadClassLettersNumbers(List<Object> bukvibrojki) {
         this.bukvibrojki = bukvibrojki;

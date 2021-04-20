@@ -31,7 +31,5 @@ class ThreadingExample {
         // togas zapocnuva run() - logikata na thread
         t1.join(10);
         t1.interrupt();
-
     }
-
 }

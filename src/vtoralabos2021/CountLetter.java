@@ -31,7 +31,6 @@ public class CountLetter {
             // da se implementira
             coordinator.acquire();
             // 100 nitki od 1000 chekaat ovde
-
             mutex.acquire();
             // edna po edna dobivaat pristap do count..
             if (data.charAt(0) == 'E' || data.charAt(0) == 'e') {
@@ -39,9 +38,7 @@ public class CountLetter {
                 // oslobodi mutex ako char e E
             }
             mutex.release();
-
             coordinator.release();
-
         }
 
         private String data;
@@ -82,11 +79,9 @@ public class CountLetter {
 
         for (int i = 0; i < data.length; i++) {
             // kolku sto ima characters - tolku nitki se kreiraat - so toj single character
-
             Counter c = new Counter(data[i]);
             threads.add(c);
         }
-
 
         for (Thread t : threads) {
             t.start();
@@ -96,9 +91,5 @@ public class CountLetter {
             t.join();
         }
         System.out.println(count);
-
-
     }
 }
-
-
